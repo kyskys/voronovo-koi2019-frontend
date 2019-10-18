@@ -1,3 +1,20 @@
-<p>
-  score works!
-</p>
+<p-table [value]="scores" [loading]="isLoading" [totalRecords]="totalRecords" [lazy]="true" [paginator]="true"
+         (onLazyLoad)="getScores($event)" [rows]="pageSize">
+  <ng-template pTemplate="header">
+    <tr>
+      <th *ngFor="let col of cols">
+        {{col.label}}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-score>
+    <tr>
+      <td>{{score.id}}</td>
+      <td>{{score.name}}</td>
+      <td>{{score.date}}</td>
+      <td>{{score.time | date:'mm:ss'}}</td>
+      <td>{{score.percent ? score.percent : 0 | percent}}</td>
+      <td>{{score.category}}</td>
+    </tr>
+  </ng-template>
+</p-table>
