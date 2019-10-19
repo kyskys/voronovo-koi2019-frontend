@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { Page } from '../model/page';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Page} from '../model/page';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +16,10 @@ export class ScoreService {
       .set('size', page.size.toString())
       .set('page', page.page.toString())
       .set('sort', page.sort);
-    return this.http.get<any>(`${environment.baseUrl}/scores`, {params: params});
+    return this.http.get<any>('/scores', {params: params});
+  }
+
+  deleteScores(ids: number[]): Observable<any> {
+    return this.http.post('/scores/deleteAll', {value: [...ids]});
   }
 }

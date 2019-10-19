@@ -1,3 +1,43 @@
-<p>
-  question works!
-</p>
+<div class="question-title">{{labels.title}}</div>
+<form name="questionForm" (ngSubmit)="createQuestion()">
+  <div class="ui-fluid ui-g-offset-2 ui-md-offset-2">
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12">
+        <div class="ui-g-2 ui-md-2">
+          <label>{{labels.answer}}</label>
+        </div>
+        <div class="ui-g-6 ui-md-6">
+          <input pInputText [(ngModel)]="question.correctAnswer" placeholder="{{placeholders.answer}}" name="answer"
+                 required>
+        </div>
+      </div>
+      <div class="ui-g-12 ui-md-12">
+        <div class="ui-g-2 ui-md-2">
+          <label>{{labels.description}}</label>
+        </div>
+        <div class="ui-g-6 ui-md-6">
+          <textarea pInputTextarea [rows]="5" [(ngModel)]="question.description" placeholder="{{placeholders.description}}"
+                    name="description"></textarea>
+        </div>
+      </div>
+      <div class="ui-g-12 ui-md-12">
+        <div class="ui-g-2 ui-md-2">
+          <label>{{labels.image}}</label>
+        </div>
+        <div class="ui-g-6 ui-md-6">
+          <p-fileUpload name="file" accept="image/*" maxFileSize="1000000" url="{{uploadUrl()}}"
+                        (onUpload)="uploadImage($event)" [chooseLabel]="labels.chooseLabel"
+                        [uploadLabel]="labels.uploadLabel" [cancelLabel]="labels.cancelLabel">
+            <ng-template pTemplate="content">
+              <div *ngIf="isUploaded">{{labels.successfullyUploaded}}</div>
+            </ng-template>
+          </p-fileUpload>
+        </div>
+      </div>
+      <div class="ui-fluid">
+        <button [disabled]="!question.correctAnswer || !question.image" pButton type="submit" icon="pi pi-check"
+                label="{{buttons.create}}"></button>
+      </div>
+    </div>
+  </div>
+</form>

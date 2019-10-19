@@ -1,7 +1,10 @@
 <p-table [value]="scores" [loading]="isLoading" [totalRecords]="totalRecords" [lazy]="true" [paginator]="true"
-         (onLazyLoad)="getScores($event)" [rows]="pageSize">
+         (onLazyLoad)="getScores($event)" [rows]="pageSize" [(selection)]="selectedScores">
   <ng-template pTemplate="header">
     <tr>
+      <th style="width: 3em">
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
       <th *ngFor="let col of cols">
         {{col.label}}
       </th>
@@ -9,12 +12,28 @@
   </ng-template>
   <ng-template pTemplate="body" let-score>
     <tr>
+      <td>
+        <p-tableCheckbox [value]="score"></p-tableCheckbox>
+      </td>
       <td>{{score.id}}</td>
       <td>{{score.name}}</td>
       <td>{{score.date}}</td>
       <td>{{score.time | date:'mm:ss'}}</td>
-      <td>{{score.percent ? score.percent : 0 | percent}}</td>
-      <td>{{score.category}}</td>
+      <td>{{percent(score.percent) | percent}}</td>
+      <td>{{score.category | categoryName }}</td>
     </tr>
   </ng-template>
+  <ng-template pTemplate="summary">
+    <ng-container *ngIf="selectedScores?.length > 0">
+      <ul>
+        <li *ngFor="let score of selectedScores" style="text-align: left">
+          {{score.id + ' - ' + score.name + ' - '}}{{score.time | date:'mm:ss'}}
+        </li>
+      </ul>
+      <button pButton type="button" icon="pi pi-times" label="{{labels.delete}}" class="ui-button-danger"
+              (click)="deleteSelected($event)"></button>
+    </ng-container>
+  </ng-template>
 </p-table>
+<ng-container *ngIf="isSelected">
+</ng-container>

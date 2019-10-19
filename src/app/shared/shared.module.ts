@@ -7,8 +7,13 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AppRoutingModule } from './app-routing.module';
 import { MenubarModule } from 'primeng/menubar';
 import { TableModule } from 'primeng/table';
+import { ButtonModule} from "primeng/button";
 import { HeaderComponent } from './header/header.component';
 import { PaginatorModule } from 'primeng/paginator';
+import { CategoryNamePipe } from './pipe/category-name/category-name.pipe';
+import {InputTextModule} from "primeng/inputtext";
+import {InputTextareaModule} from "primeng/inputtextarea";
+import {FileUploadModule} from "primeng/fileupload";
 
 @NgModule({
   imports: [
@@ -16,7 +21,11 @@ import { PaginatorModule } from 'primeng/paginator';
     AppRoutingModule,
     MenubarModule,
     TableModule,
-    PaginatorModule
+    PaginatorModule,
+    ButtonModule,
+    InputTextModule,
+    InputTextareaModule,
+    FileUploadModule
   ],
   exports: [
     HeaderComponent
@@ -26,7 +35,8 @@ import { PaginatorModule } from 'primeng/paginator';
     QuestionComponent,
     TestComponent,
     PageNotFoundComponent,
-    HeaderComponent
+    HeaderComponent,
+    CategoryNamePipe
   ]
 })
 export class SharedModule {

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Score } from './model/score';
-import { ScoreService } from './score.service';
-import { LazyLoadEvent } from 'primeng/api';
-import { Page } from '../model/page';
+import {Component, OnInit} from '@angular/core';
+import {Score} from './shared/model/score';
+import {ScoreService} from './score.service';
+import {LazyLoadEvent, MessageService} from 'primeng/api';
+import {Page} from '../model/page';
+import {pull} from 'lodash';
 
 @Component({
   selector: 'app-score',
@@ -11,7 +12,9 @@ import { Page } from '../model/page';
 })
 export class ScoreComponent implements OnInit {
   scores: Score[];
+  selectedScores: Score[];
   isLoading: boolean;
+  isSelected: boolean;
   totalRecords: number;
   pageSize: number;
 
@@ -24,7 +27,12 @@ export class ScoreComponent implements OnInit {
     {field: 'category', label: 'Категория'}
   ];
 
-  constructor(private scoreService: ScoreService) {
+  labels = {
+    delete: "Удалить"
+  };
+
+  constructor(private scoreService: ScoreService,
+              private messageService: MessageService) {
     this.isLoading = false;
     this.pageSize = 20;
   }
@@ -50,5 +58,17 @@ export class ScoreComponent implements OnInit {
         this.isLoading = false;
       }, () => this.isLoading = false);
     }, 1000);
+  }
+
+  deleteSelected(event: any) {
+    this.scoreService.deleteScores(this.selectedScores.map(score => score.id)).subscribe(response => {
+      this.messageService.add({severity: 'success', summary: 'Удаление успешно'});
+      pull(this.scores, ...this.selectedScores);
+      this.selectedScores = [];
+    });
+  }
+
+  percent(percent: number) {
+    return percent ? percent / 100 : 0;
   }
 }
