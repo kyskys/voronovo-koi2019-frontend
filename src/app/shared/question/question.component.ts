@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Question} from "./shared/model/question";
-import {ImageService} from "../service/image/image.service";
-import {environment} from "../../../environments/environment";
-import {QuestionService} from "./question.service";
-import {MessageService} from "primeng/api";
+import {Question} from '../model/question';
+import {ImageService} from '../service/image/image.service';
+import {QuestionService} from './question.service';
+import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-question',
@@ -46,7 +45,7 @@ export class QuestionComponent implements OnInit {
 
   createQuestion() {
     this.questionService.createQuestion(this.question).subscribe(response => {
-      this.messageService.add({severity: 'success', summary: 'Задача дня создана', detail: `id=${response.id}`})
+      this.messageService.add({severity: 'success', summary: 'Задача дня создана', detail: `id=${response.id}`});
     });
   }
 
@@ -54,7 +53,7 @@ export class QuestionComponent implements OnInit {
     this.question.image = event.originalEvent.body.value;
     this.isUploaded = true;
     setTimeout(() => {
-      this.isUploaded = false
+      this.isUploaded = false;
     }, 1000);
   }
 

@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from "@angular/router";
-import { TestComponent } from "./test/test.component";
-import { QuestionComponent } from "./question/question.component";
-import { ScoreComponent } from "./score/score.component";
-import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
+import { RouterModule, Routes } from '@angular/router';
+import { CreateTestComponent } from './test/create/create-test.component';
+import { QuestionComponent } from './question/question.component';
+import { ScoreComponent } from './score/score.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { TestListComponent } from './test/list/test-list.component';
 
 const appRoutes: Routes = [
   {
@@ -11,8 +12,12 @@ const appRoutes: Routes = [
     component: ScoreComponent
   },
   {
-    path: 'test',
-    component: TestComponent
+    path: 'test/create',
+    component: CreateTestComponent
+  },
+  {
+    path: 'test/list',
+    component: TestListComponent
   },
   {
     path: 'question',
