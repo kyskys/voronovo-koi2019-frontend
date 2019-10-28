@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Test } from '../../model/test';
+import { TestItem } from '../../model/test-item';
 
 @Component({
   selector: 'app-create-test',
@@ -7,14 +8,24 @@ import { Test } from '../../model/test';
   styleUrls: ['./create-test.component.css']
 })
 export class CreateTestComponent {
+  test: Test;
 
   labels = {
     title: 'Создать тест',
-    name: 'Название'
+    name: 'Название',
+    question: {
+      title: 'Вопрос №',
+      correctAnswer: 'Правильный ответ'
+    },
   };
-  test: any;
   placeholders = {
-    name: 'Название теста'
+    name: 'Название теста',
+    expression: 'Введите описание вопроса',
+    correctAnswer: 'Введите правильный ответ',
+    option: 'Неправильный ответ'
+  };
+  buttons = {
+    addItem: 'Добавить вопрос'
   };
 
   constructor() {
@@ -23,5 +34,9 @@ export class CreateTestComponent {
 
   createTest() {
 
+  }
+
+  addTestItem() {
+    this.test.items.push(new TestItem());
   }
 }

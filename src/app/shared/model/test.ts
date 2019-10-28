@@ -5,5 +5,5 @@ export class Test {
   name: string;
   active: boolean;
   startedAt: Date;
-  items: TestItem[];
+  items: TestItem[] = [];
 }

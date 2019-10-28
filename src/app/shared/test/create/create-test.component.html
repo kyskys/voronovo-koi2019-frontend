@@ -6,11 +6,38 @@
         <div class="ui-g-2 ui-md-2">
           <label>{{labels.name}}</label>
         </div>
-        <div class="ui-g-6 ui-md-6">
+        <div class="ui-g-5 ui-md-5">
           <input pInputText [(ngModel)]="test.name" placeholder="{{placeholders.name}}" name="answer"
                  required>
         </div>
       </div>
     </div>
   </div>
+  <ng-container *ngIf="test.name">
+    <div class="ui-fluid ui-g-offset-2 ui-md-offset-2 ui-g-7 ui-md-7">
+      <div class="trainer-subtitle">{{labels.title}}</div>
+      <div *ngFor="let item of test.items; let i = index" class="ui-grid-row">
+        <div class="question-title">{{labels.question.title}} {{i + 1}}</div>
+        <div class="ui-g-12 ui-md-12">
+          <textarea pInputTextarea [(ngModel)]="item.expression" placeholder="{{placeholders.expression}}"
+                    name="item{{i}}"></textarea>
+        </div>
+        <div class="ui-g-8 ui-md-8">
+          <input pInputText [(ngModel)]="item.correctAnswer" placeholder="{{placeholders.correctAnswer}}"
+                 name="item{{i}}answer">
+          <ul>
+            <li *ngFor="let option of item.allOptions; let j = index" class="question-option">
+              <input pInputText [(ngModel)]="option" placeholder="{{placeholders.option}}" name="item{{i}}option{{j}}">
+              <div class="ui-g-1 ui-md-1"><button pButton label="X"></button></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="ui-fluid ui-g-offset-2 ui-md-offset-2 ui-g-7 ui-md-7">
+      <div class="ui-fluid ui-g-2 ui-md-2">
+        <button pButton icon="pi pi-plus" [label]="buttons.addItem" (click)="addTestItem()" class="ui-fluid"></button>
+      </div>
+    </div>
+  </ng-container>
 </form>

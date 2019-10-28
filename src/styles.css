@@ -4,3 +4,17 @@
   text-align: center;
   padding: 1em 0 1em 0;
 }
+
+.trainer-subtitle {
+  font-size: 2em;
+  padding: 1em 0 1em 0;
+}
+
+.question-title {
+  font-size: 1.5em;
+  padding: 0.5em 0 0.5em 0;
+}
+
+.question-option {
+  margin: 1em 0 1em 0;
+}
