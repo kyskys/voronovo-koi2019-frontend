@@ -17,4 +17,19 @@
 
 .question-option {
   margin: 1em 0 1em 0;
+  display: flex;
+}
+
+.question-option > input {
+  margin: 0.5em 0 0.5em 0;
+}
+
+.question-option-button {
+  padding: 0.5em 0 0.5em 0.5em;
+}
+
+.question-option-number {
+  align-self: center;
+  padding: 0.5em 0.5em 0.5em 0;
+  font-size: 1.5em;
 }

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { Test } from '../../model/test';
-import { TestItem } from '../../model/test-item';
+import {Component} from '@angular/core';
+import {Test} from '../../model/test';
+import {TestItem} from '../../model/test-item';
 
 @Component({
   selector: 'app-create-test',
@@ -25,7 +25,8 @@ export class CreateTestComponent {
     option: 'Неправильный ответ'
   };
   buttons = {
-    addItem: 'Добавить вопрос'
+    addItem: 'Добавить вопрос',
+    deleteQuestion: 'Удалить'
   };
 
   constructor() {
@@ -38,5 +39,21 @@ export class CreateTestComponent {
 
   addTestItem() {
     this.test.items.push(new TestItem());
+  }
+
+  deleteOption(j: number, options: string[]) {
+    options.splice(j, 1);
+  }
+
+  addOption(allOptions: string[]) {
+    allOptions.push('');
+  }
+
+  trackByIndex(index, item) {
+    return index;
+  }
+
+  deleteQuestion(i: number) {
+    this.test.items.splice(i, 1);
   }
 }

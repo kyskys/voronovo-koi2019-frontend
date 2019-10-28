@@ -16,21 +16,32 @@
   <ng-container *ngIf="test.name">
     <div class="ui-fluid ui-g-offset-2 ui-md-offset-2 ui-g-7 ui-md-7">
       <div class="trainer-subtitle">{{labels.title}}</div>
-      <div *ngFor="let item of test.items; let i = index" class="ui-grid-row">
-        <div class="question-title">{{labels.question.title}} {{i + 1}}</div>
+      <div *ngFor="let item of test.items; let i = index; trackBy: trackByIndex" class="ui-grid-row">
+        <div>
+          <span class="question-title ui-g-10 ui-md-10">{{labels.question.title}} {{i + 1}}</span>
+          <div class="ui-g-2 ui-md-2">
+            <button pButton [label]="buttons.deleteQuestion" (click)="deleteQuestion(i)"></button>
+          </div>
+        </div>
         <div class="ui-g-12 ui-md-12">
           <textarea pInputTextarea [(ngModel)]="item.expression" placeholder="{{placeholders.expression}}"
-                    name="item{{i}}"></textarea>
+                    name="item{{i}}expression" rows="2" autoResize="autoResize"></textarea>
         </div>
         <div class="ui-g-8 ui-md-8">
           <input pInputText [(ngModel)]="item.correctAnswer" placeholder="{{placeholders.correctAnswer}}"
                  name="item{{i}}answer">
-          <ul>
-            <li *ngFor="let option of item.allOptions; let j = index" class="question-option">
-              <input pInputText [(ngModel)]="option" placeholder="{{placeholders.option}}" name="item{{i}}option{{j}}">
-              <div class="ui-g-1 ui-md-1"><button pButton label="X"></button></div>
-            </li>
-          </ul>
+          <div *ngFor="let option of test.items[i].allOptions; let j = index; trackBy: trackByIndex"
+               class="question-option">
+            <span class="question-option-number">{{j + 1}}) </span>
+            <input pInputText [(ngModel)]="test.items[i].allOptions[j]" placeholder="{{placeholders.option}}"
+                   name="item{{i}}option{{j}}">
+            <div class="question-option-button">
+              <button pButton icon="pi pi-times" class="ui-button-danger" *ngIf="!(j + 1 == item.allOptions.length)"
+                      (click)="deleteOption(j, item.allOptions)"></button>
+              <button pButton icon="pi pi-plus" class="ui-button-success" *ngIf="j + 1 == item.allOptions.length"
+                      (click)="addOption(item.allOptions)"></button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
