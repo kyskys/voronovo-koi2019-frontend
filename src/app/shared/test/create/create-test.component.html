@@ -1,22 +1,23 @@
-<div class="trainer-title">{{labels.title}}</div>
-<form name="questionForm" (ngSubmit)="createTest()">
-  <div class="ui-fluid ui-g-offset-2 ui-md-offset-2">
-    <div class="ui-g">
-      <div class="ui-g-12 ui-md-12">
-        <div class="ui-g-2 ui-md-2">
-          <label>{{labels.name}}</label>
-        </div>
-        <div class="ui-g-5 ui-md-5">
-          <input pInputText [(ngModel)]="test.name" placeholder="{{placeholders.name}}" name="answer"
-                 required>
-        </div>
+<div class="test-sidebar-buttons ui-g-2 ui-md-2" [class.trainer-question-sidebar-visible]="scrollbarVisible()">
+  <button pButton icon="pi pi-chevron-up" (click)="scrollToTop()" class="test-sidebar-button-top"></button>
+  <button pButton icon="pi pi-chevron-down" (click)="scrollToBottom()" class="test-sidebar-button-bottom"></button>
+</div>
+<div class="ui-fluid ui-g-offset-2 ui-md-offset-2 ui-g-7 ui-md-7">
+  <div class="trainer-title">{{labels.title}}</div>
+  <form name="questionForm" (ngSubmit)="createTest()">
+      <button pButton icon="pi pi-save" [label]="buttons.createTest" class="question-submit-button"></button>
+    <div class="display-flex">
+      <div class="ui-g-4 ui-md-4">
+        <label>{{labels.name}}</label>
+      </div>
+      <div class="ui-g-8 ui-md-8">
+        <input pInputText [(ngModel)]="test.name" placeholder="{{placeholders.name}}" name="answer"
+               required>
       </div>
     </div>
-  </div>
-  <ng-container *ngIf="test.name">
-    <div class="ui-fluid ui-g-offset-2 ui-md-offset-2 ui-g-7 ui-md-7">
-      <div class="trainer-subtitle">{{labels.title}}</div>
-      <div *ngFor="let item of test.items; let i = index; trackBy: trackByIndex" class="ui-grid-row">
+    <ng-container *ngIf="test.name">
+      <div class="trainer-subtitle">{{labels.subtitle}}</div>
+      <div *ngFor="let item of test.items; let i = index; trackBy: trackByIndex" class="ui-grid-row" id="item{{i}}">
         <div>
           <span class="question-title ui-g-10 ui-md-10">{{labels.question.title}} {{i + 1}}</span>
           <div class="ui-g-2 ui-md-2">
@@ -44,11 +45,14 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="ui-fluid ui-g-offset-2 ui-md-offset-2 ui-g-7 ui-md-7">
       <div class="ui-fluid ui-g-2 ui-md-2">
         <button pButton icon="pi pi-plus" [label]="buttons.addItem" (click)="addTestItem()" class="ui-fluid"></button>
       </div>
-    </div>
-  </ng-container>
-</form>
+    </ng-container>
+  </form>
+</div>
+<div class="test-sidebar ui-g-3 ui-md-3" [class.trainer-question-sidebar-visible]="scrollbarVisible()">
+  <div *ngFor="let item of test.items; let k = index;" class="test-sidebar-item" (click)="scrollTo(k)">
+    {{labels.question.title}}{{k + 1}}
+  </div>
+</div>

@@ -1,6 +1,8 @@
-import {Component} from '@angular/core';
-import {Test} from '../../model/test';
-import {TestItem} from '../../model/test-item';
+import { ChangeDetectorRef, Component, ElementRef } from '@angular/core';
+import { Test } from '../../model/test';
+import { TestItem } from '../../model/test-item';
+import { TestService } from '../shared/test.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-create-test',
@@ -16,7 +18,8 @@ export class CreateTestComponent {
     question: {
       title: 'Вопрос №',
       correctAnswer: 'Правильный ответ'
-    },
+    }, subtitle: 'Список вопросов'
+
   };
   placeholders = {
     name: 'Название теста',
@@ -26,15 +29,19 @@ export class CreateTestComponent {
   };
   buttons = {
     addItem: 'Добавить вопрос',
-    deleteQuestion: 'Удалить'
+    deleteQuestion: 'Удалить',
+    createTest: 'Создать тест'
   };
 
-  constructor() {
+  constructor(private testService: TestService,
+              private messageService: MessageService) {
     this.test = new Test();
   }
 
   createTest() {
-
+    this.testService.createTest(this.test).subscribe(test => {
+      this.messageService.add({severity: 'success', summary: 'Тест успешно создан', detail: 'ID - ' + test.id});
+    });
   }
 
   addTestItem() {
@@ -55,5 +62,22 @@ export class CreateTestComponent {
 
   deleteQuestion(i: number) {
     this.test.items.splice(i, 1);
+  }
+
+  scrollToTop() {
+    window.scrollTo(0, 0);
+  }
+
+  scrollToBottom() {
+    window.scrollTo(0, document.documentElement.scrollHeight);
+  }
+
+  scrollbarVisible() {
+    return document.documentElement.scrollHeight > document.documentElement.clientHeight;
+  }
+
+  scrollTo(k: number) {
+    document.getElementById('item' + k).scrollIntoView();
+    document.documentElement.scrollTop += -50;
   }
 }
