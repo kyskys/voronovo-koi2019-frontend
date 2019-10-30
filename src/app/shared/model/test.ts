@@ -5,5 +5,6 @@ export class Test {
   name: string;
   active: boolean;
   startedAt: Date;
+  timeToComplete: number;
   items: TestItem[] = [];
 }

@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {Score} from './shared/model/score';
-import {ScoreService} from './score.service';
-import {LazyLoadEvent, MessageService} from 'primeng/api';
-import {Page} from '../model/page';
-import {pull} from 'lodash';
+import { Component, OnInit } from '@angular/core';
+import { Score } from './shared/model/score';
+import { ScoreService } from './score.service';
+import { LazyLoadEvent, MessageService } from 'primeng/api';
+import { Page } from '../model/page';
+import { pull } from 'lodash';
 
 @Component({
   selector: 'app-score',
@@ -14,7 +14,6 @@ export class ScoreComponent implements OnInit {
   scores: Score[];
   selectedScores: Score[];
   isLoading: boolean;
-  isSelected: boolean;
   totalRecords: number;
   pageSize: number;
 
@@ -28,7 +27,7 @@ export class ScoreComponent implements OnInit {
   ];
 
   labels = {
-    delete: "Удалить"
+    delete: 'Удалить'
   };
 
   constructor(private scoreService: ScoreService,

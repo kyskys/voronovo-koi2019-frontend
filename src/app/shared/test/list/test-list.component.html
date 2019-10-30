@@ -1,1 +1,62 @@
-<p>test-list works!</p>
+<p-table [value]="tests" [loading]="isLoading" [totalRecords]="totalRecords" [lazy]="true" [paginator]="true"
+         (onLazyLoad)="getTests($event)" [rows]="pageSize" [(selection)]="selectedTests">
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 3em">
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+      <th *ngFor="let col of cols">
+        {{col.label}}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-test>
+    <tr>
+      <td>
+        <p-tableCheckbox [value]="test"></p-tableCheckbox>
+      </td>
+      <td>{{test.id}}</td>
+      <td>{{test.name}}</td>
+      <td>{{test.status}}</td>
+      <td>{{test.timeToComplete ? (test.timeToComplete | date:'mm:ss') : '--:--'}}</td>
+      <td>{{test.startedAt}}</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="summary">
+    <ng-container *ngIf="selectedTests?.length > 0">
+      <ul>
+        <li *ngFor="let test of selectedTests" style="text-align: left">
+          {{test.id + ' - ' + test.name}}
+        </li>
+      </ul>
+      <button pButton type="button" icon="pi pi-times" label="{{labels.delete}}" class="ui-button-danger"
+              (click)="deleteSelected($event)"></button>
+      <button pButton icon="pi pi-pencil" label="{{labels.edit}}" class="ui-button-warning"
+              [disabled]="this.selectedTests.length > 1" (click)="editSelected()"></button>
+      <button pButton icon="pi pi-calendar" label="{{labels.start}}" class="ui-button-success"
+              *ngIf="this.selectedTests.length == 1 && !this.selectedTests[0].active"
+              (click)="startSelected()"></button>
+    </ng-container>
+  </ng-template>
+</p-table>
+<p-dialog header="{{labels.modal.title}}" [(visible)]="showModal" [style]="{width: '400px'}">
+  <form name="startTestForm">
+    <div class="ui-g-12 ui-md-12">
+      <div class="ui-g-6 ui-md-6">{{labels.modal.date}}</div>
+      <div class="ui-g-6 ui-md-6">
+        <p-calendar [showTime]="true" [(ngModel)]="this.selectedTests[0].startedAt"></p-calendar>
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-12">
+      <div class="ui-g-6 ui-md-6">{{labels.modal.time}}</div>
+      <div class="ui-g-6 ui-md-6">
+        <p-calendar [timeOnly]="true" [(ngModel)]="this.selectedTests[0].timeToComplete"></p-calendar>
+      </div>
+    </div>
+    <p-footer>
+      <button pButton icon="pi-pi-check" type="submit" label="{{labels.start}}" (click)="updateTest()"
+              class="ui-button-success"></button>
+      <button pButton icon="pi pi-times" label="{{labels.cancel}}" (click)="cancel()" class="ui-button-error"></button>
+    </p-footer>
+  </form>
+</p-dialog>

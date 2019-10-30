@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, ElementRef } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Test } from '../../model/test';
 import { TestItem } from '../../model/test-item';
 import { TestService } from '../shared/test.service';
 import { MessageService } from 'primeng/api';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-create-test',
@@ -11,6 +12,9 @@ import { MessageService } from 'primeng/api';
 })
 export class CreateTestComponent {
   test: Test;
+
+  @ViewChild('questionForm', {static: false})
+  questionForm: NgForm;
 
   labels = {
     title: 'Создать тест',
@@ -39,6 +43,11 @@ export class CreateTestComponent {
   }
 
   createTest() {
+    if (!this.questionForm.valid) {
+      return;
+    }
+
+    this.test.active = false;
     this.testService.createTest(this.test).subscribe(test => {
       this.messageService.add({severity: 'success', summary: 'Тест успешно создан', detail: 'ID - ' + test.id});
     });

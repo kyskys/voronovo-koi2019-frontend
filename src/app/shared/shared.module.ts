@@ -15,6 +15,8 @@ import { CategoryNamePipe } from './pipe/category-name/category-name.pipe';
 import {InputTextModule} from 'primeng/inputtext';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {FileUploadModule} from 'primeng/fileupload';
+import { DialogModule } from "primeng/dialog";
+import { CalendarModule } from "primeng/calendar";
 
 @NgModule({
   imports: [
@@ -26,7 +28,9 @@ import {FileUploadModule} from 'primeng/fileupload';
     ButtonModule,
     InputTextModule,
     InputTextareaModule,
-    FileUploadModule
+    FileUploadModule,
+    DialogModule,
+    CalendarModule
   ],
   exports: [
     HeaderComponent

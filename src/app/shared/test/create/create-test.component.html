@@ -4,8 +4,11 @@
 </div>
 <div class="ui-fluid ui-g-offset-2 ui-md-offset-2 ui-g-7 ui-md-7">
   <div class="trainer-title">{{labels.title}}</div>
-  <form name="questionForm" (ngSubmit)="createTest()">
-      <button pButton icon="pi pi-save" [label]="buttons.createTest" class="question-submit-button"></button>
+  <form name="questionForm" #questionForm="ngForm" (ngSubmit)="createTest()">
+    <div class="question-submit-div">
+      <button pButton [disabled]="!questionForm.form.valid" type="submit" icon="pi pi-save" [label]="buttons.createTest"
+              class="question-button"></button>
+    </div>
     <div class="display-flex">
       <div class="ui-g-4 ui-md-4">
         <label>{{labels.name}}</label>
@@ -18,24 +21,25 @@
     <ng-container *ngIf="test.name">
       <div class="trainer-subtitle">{{labels.subtitle}}</div>
       <div *ngFor="let item of test.items; let i = index; trackBy: trackByIndex" class="ui-grid-row" id="item{{i}}">
-        <div>
-          <span class="question-title ui-g-10 ui-md-10">{{labels.question.title}} {{i + 1}}</span>
-          <div class="ui-g-2 ui-md-2">
-            <button pButton [label]="buttons.deleteQuestion" (click)="deleteQuestion(i)"></button>
+        <div class="ui-g-12 ui-md-12">
+          <span class="question-title ui-g-8 ui-md-8">{{labels.question.title}} {{i + 1}}</span>
+          <div class="ui-g-4 ui-md-4 padding right">
+            <button pButton [label]="buttons.deleteQuestion" class="question-button right"
+                    (click)="deleteQuestion(i)"></button>
           </div>
         </div>
         <div class="ui-g-12 ui-md-12">
           <textarea pInputTextarea [(ngModel)]="item.expression" placeholder="{{placeholders.expression}}"
-                    name="item{{i}}expression" rows="2" autoResize="autoResize"></textarea>
+                    name="item{{i}}expression" rows="2" autoResize="autoResize" required></textarea>
         </div>
         <div class="ui-g-8 ui-md-8">
           <input pInputText [(ngModel)]="item.correctAnswer" placeholder="{{placeholders.correctAnswer}}"
-                 name="item{{i}}answer">
+                 name="item{{i}}answer" required>
           <div *ngFor="let option of test.items[i].allOptions; let j = index; trackBy: trackByIndex"
                class="question-option">
             <span class="question-option-number">{{j + 1}}) </span>
             <input pInputText [(ngModel)]="test.items[i].allOptions[j]" placeholder="{{placeholders.option}}"
-                   name="item{{i}}option{{j}}">
+                   name="item{{i}}option{{j}}" required>
             <div class="question-option-button">
               <button pButton icon="pi pi-times" class="ui-button-danger" *ngIf="!(j + 1 == item.allOptions.length)"
                       (click)="deleteOption(j, item.allOptions)"></button>
@@ -46,7 +50,8 @@
         </div>
       </div>
       <div class="ui-fluid ui-g-2 ui-md-2">
-        <button pButton icon="pi pi-plus" [label]="buttons.addItem" (click)="addTestItem()" class="ui-fluid"></button>
+        <button pButton icon="pi pi-plus" [label]="buttons.addItem" class="question-button"
+                (click)="addTestItem()"></button>
       </div>
     </ng-container>
   </form>
