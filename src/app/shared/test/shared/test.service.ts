@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Test } from '../../model/test';
-import { Observable } from 'rxjs';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Page } from '../../model/page';
+import {Injectable} from '@angular/core';
+import {Test} from '../../model/test';
+import {Observable} from 'rxjs';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Page} from '../../model/page';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,10 @@ export class TestService {
     return this.http.post<Test>('/tests', test);
   }
 
+  updateTest(id: number, test: Test): Observable<Test> {
+    return this.http.patch<Test>('/tests/' + id, test);
+  }
+
   getTests(page: Page): Observable<any> {
     const params = new HttpParams()
       .set('size', page.size.toString())
@@ -25,6 +29,6 @@ export class TestService {
   }
 
   deleteTests(ids: number[]): Observable<any> {
-    return this.http.post('/scores/deleteAll', {value: [...ids]});
+    return this.http.post('/tests/deleteAll', {value: [...ids]});
   }
 }

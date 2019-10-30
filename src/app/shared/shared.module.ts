@@ -17,6 +17,7 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
 import {FileUploadModule} from 'primeng/fileupload';
 import { DialogModule } from "primeng/dialog";
 import { CalendarModule } from "primeng/calendar";
+import { EditTestComponent } from './test/edit/edit-test.component';
 
 @NgModule({
   imports: [
@@ -42,7 +43,8 @@ import { CalendarModule } from "primeng/calendar";
     TestListComponent,
     PageNotFoundComponent,
     HeaderComponent,
-    CategoryNamePipe
+    CategoryNamePipe,
+    EditTestComponent
   ]
 })
 export class SharedModule {

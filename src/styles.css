@@ -34,3 +34,7 @@ html, body {
   display: flex;
   align-items: baseline;
 }
+
+.float-right {
+  float: right;
+}

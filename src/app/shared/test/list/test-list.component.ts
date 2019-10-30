@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { Test } from '../../model/test';
-import { LazyLoadEvent, MessageService } from 'primeng/api';
-import { TestService } from '../shared/test.service';
-import { pull } from 'lodash';
+import {Component} from '@angular/core';
+import {Test} from '../../model/test';
+import {LazyLoadEvent, MessageService} from 'primeng/api';
+import {TestService} from '../shared/test.service';
+import {pull, cloneDeep} from 'lodash';
 
 @Component({
   selector: 'app-test-list',
@@ -15,6 +15,8 @@ export class TestListComponent {
   totalRecords: number;
   pageSize: number;
   selectedTests: Test[];
+  modalTest: Test;
+  readonly defaultDate: Date = new Date(1970,1,1,0,0,0,0);
 
   cols = [
     {field: 'id', label: 'ID'},
@@ -33,7 +35,10 @@ export class TestListComponent {
       date: 'Дата начала',
       time: 'Время на решение'
     },
-    cancel: 'Отменить'
+    cancel: 'Отменить',
+    save: 'Сохранить',
+    reset: 'Сбросить',
+    notSet: 'Не выставлено'
   };
   showModal: boolean;
 
@@ -41,9 +46,10 @@ export class TestListComponent {
               private messageService: MessageService) {
     this.isLoading = false;
     this.pageSize = 20;
+    this.selectedTests = [];
   }
 
-  getTests(event: LazyLoadEvent) {
+  getTests(event?: LazyLoadEvent) {
     this.testService.getTests({page: 0, size: this.pageSize, sort: ''}).subscribe(tests => {
       this.pageSize = tests.page.size;
       this.totalRecords = tests.page.totalElements;
@@ -64,15 +70,47 @@ export class TestListComponent {
   }
 
   startSelected() {
+    this.modalTest = cloneDeep(this.selectedTests[0]);
     this.showModal = true;
   }
 
   updateTest() {
-    this.showModal = false;
-  }
+    const date: Date = new Date(this.modalTest.timeToComplete);
+    let test = <Test>{
+      active: true,
+      timeToComplete: date.getHours() * 60 * 60000 + date.getMinutes() * 60000,
+      startedAt: this.modalTest.startedAt
+    };
 
+    this.testService.updateTest(this.modalTest.id, test).subscribe(test => {
+      this.messageService.add({severity: 'success', summary: 'Тест запущен'});
+      this.refreshModalTest();
+      this.getTests();
+      this.selectedTests = [];
+    }, () => {
+      this.refreshModalTest();
+    });
+  }
 
   cancel() {
     this.showModal = false;
+  }
+
+  refreshModalTest() {
+    this.modalTest = undefined;
+    this.showModal = false;
+  }
+
+  resetActiveTest(id: number) {
+    let test = <Test>{
+      active: false,
+      timeToComplete: null,
+      startedAt: null
+    };
+
+    this.testService.updateTest(id, test).subscribe(test => {
+      this.messageService.add({severity: 'success', summary: 'Время сброшено'});
+      this.getTests();
+    });
   }
 }

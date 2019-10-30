@@ -1,0 +1,15 @@
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #a6a6a6;
+}
+
+.green {
+  color: #34A835;
+  padding-top: .5em;
+}
+
+.red {
+  color: #e91224;
+  padding-top: .5em;
+}

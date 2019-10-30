@@ -17,9 +17,13 @@
       </td>
       <td>{{test.id}}</td>
       <td>{{test.name}}</td>
-      <td>{{test.status}}</td>
-      <td>{{test.timeToComplete ? (test.timeToComplete | date:'mm:ss') : '--:--'}}</td>
-      <td>{{test.startedAt}}</td>
+      <td *ngIf="test.active"><i class="pi pi-check green"></i>
+        <button pButton label="{{labels.reset}}" (click)="resetActiveTest(test.id)"
+                class="pi pi-secondary float-right"></button>
+      </td>
+      <td *ngIf="!test.active"><i class="pi pi-times red"></i></td>
+      <td>{{test.timeToComplete ? (test.timeToComplete | date:'HH:mm' : 'GMT') : '--:--'}}</td>
+      <td>{{test.startedAt ? (test.startedAt | date:'dd-mm-yyyy HH:mm:ss') : labels.notSet}}</td>
     </tr>
   </ng-template>
   <ng-template pTemplate="summary">
@@ -40,23 +44,26 @@
   </ng-template>
 </p-table>
 <p-dialog header="{{labels.modal.title}}" [(visible)]="showModal" [style]="{width: '400px'}">
-  <form name="startTestForm">
+  <form name="startTestForm" *ngIf="this.modalTest">
     <div class="ui-g-12 ui-md-12">
       <div class="ui-g-6 ui-md-6">{{labels.modal.date}}</div>
       <div class="ui-g-6 ui-md-6">
-        <p-calendar [showTime]="true" [(ngModel)]="this.selectedTests[0].startedAt"></p-calendar>
+        <p-calendar [showTime]="true" [(ngModel)]="this.modalTest.startedAt" name="startedAt"
+                    appendTo="body"></p-calendar>
       </div>
     </div>
     <div class="ui-g-12 ui-md-12">
       <div class="ui-g-6 ui-md-6">{{labels.modal.time}}</div>
       <div class="ui-g-6 ui-md-6">
-        <p-calendar [timeOnly]="true" [(ngModel)]="this.selectedTests[0].timeToComplete"></p-calendar>
+        <p-calendar [timeOnly]="true" [(ngModel)]="this.modalTest.timeToComplete" [defaultDate]="defaultDate"
+                    name="timeToComplete" appendTo="body"></p-calendar>
       </div>
     </div>
-    <p-footer>
-      <button pButton icon="pi-pi-check" type="submit" label="{{labels.start}}" (click)="updateTest()"
+    <div class="ui-g-12 ui-md-12 modal-footer">
+      <button pButton icon="pi pi-check" type="submit" label="{{labels.save}}" (click)="updateTest()"
               class="ui-button-success"></button>
-      <button pButton icon="pi pi-times" label="{{labels.cancel}}" (click)="cancel()" class="ui-button-error"></button>
-    </p-footer>
+      <button pButton icon="pi pi-times" label="{{labels.cancel}}" (click)="cancel()"
+              class="ui-button-error"></button>
+    </div>
   </form>
 </p-dialog>
