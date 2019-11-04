@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CreateTestComponent } from './test/create/create-test.component';
 import { QuestionComponent } from './question/question.component';
 import { ScoreComponent } from './score/score.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { TestListComponent } from './test/list/test-list.component';
+import { EditTestComponent } from './test/edit/edit-test.component';
 
 const appRoutes: Routes = [
   {
@@ -13,7 +13,11 @@ const appRoutes: Routes = [
   },
   {
     path: 'test/create',
-    component: CreateTestComponent
+    component: EditTestComponent
+  },
+  {
+    path: 'test/edit/:id',
+    component: EditTestComponent
   },
   {
     path: 'test/list',
