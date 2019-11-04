@@ -47,7 +47,7 @@ export class EditTestComponent implements OnInit {
   }
 
   ngOnInit() {
-    const id = <number>this.route.snapshot.paramMap.get('id');
+    const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
       const aee = combineLatest(this.testService.getTestInfo(id),
         this.testService.getTestItems(id))
