@@ -1,8 +1,9 @@
-import {Injectable} from '@angular/core';
-import {Test} from '../../model/test';
-import {Observable} from 'rxjs';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Page} from '../../model/page';
+import { Injectable } from '@angular/core';
+import { Test } from '../../model/test';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Page } from '../../model/page';
+import { TestItem } from '../../model/test-item';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,10 @@ export class TestService {
 
   getTestItems(id: number): Observable<any> {
     return this.http.get(`/tests/${id}/items`);
+  }
+
+  updateTestItems(items: TestItem[], id: number): Observable<any> {
+    items.forEach(item => item);
+    return this.http.post(`/tests/${id}/items`, items);
   }
 }

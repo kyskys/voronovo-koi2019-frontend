@@ -48,7 +48,7 @@ export class ScoreComponent implements OnInit {
     const page = <Page>{
       page: Math.floor(event.first / this.pageSize),
       size: 20,
-      sort: ''
+      sort: 'id'
     };
     setTimeout(() => {
       this.isLoading = true;

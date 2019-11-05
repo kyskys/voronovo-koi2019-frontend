@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Test } from '../../model/test';
 import { TestItem } from '../../model/test-item';
 import { TestService } from '../shared/test.service';
 import { MessageService } from 'primeng/api';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 
 @Component({
@@ -14,18 +14,21 @@ import { combineLatest } from 'rxjs';
 })
 export class EditTestComponent implements OnInit {
   test: Test;
-  testId: number;
+  isEdit: boolean;
+  isScrollbarVisible: boolean;
 
   @ViewChild('questionForm', {static: false})
   questionForm: NgForm;
 
   labels = {
-    title: 'Создать тест',
+    createTitle: 'Создать тест',
+    editTitle: 'Редактировать тест',
     name: 'Название',
     question: {
       title: 'Вопрос №',
       correctAnswer: 'Правильный ответ'
-    }, subtitle: 'Список вопросов'
+    },
+    subtitle: 'Список вопросов'
 
   };
   placeholders = {
@@ -37,23 +40,31 @@ export class EditTestComponent implements OnInit {
   buttons = {
     addItem: 'Добавить вопрос',
     deleteQuestion: 'Удалить',
-    createTest: 'Создать тест'
+    createTest: 'Создать тест',
+    editTest: 'Сохранить изменения'
+  };
+  summary = {
+    edit: 'Тест успешно изменён',
+    create: 'Тест успешно создан'
   };
 
   constructor(private testService: TestService,
               private messageService: MessageService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router: Router,
+              private cd: ChangeDetectorRef) {
     this.test = new Test();
   }
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.isEdit = Boolean(id);
     if (id) {
       const aee = combineLatest(this.testService.getTestInfo(id),
         this.testService.getTestItems(id))
         .subscribe(res => {
-          this.test = res[0]._embedded.test;
-          this.test.items = res[1]._embedded.items;
+          this.test = res[0];
+          this.test.items = res[1]._embedded.testItems;
         });
     }
   }
@@ -66,6 +77,7 @@ export class EditTestComponent implements OnInit {
     this.test.active = false;
     this.testService.createTest(this.test).subscribe(test => {
       this.messageService.add({severity: 'success', summary: 'Тест успешно создан', detail: 'ID - ' + test.id});
+      this.router.navigate([`test/edit/${test.id}`]);
     });
   }
 
@@ -74,21 +86,28 @@ export class EditTestComponent implements OnInit {
       return;
     }
 
-    this.testService.updateTest(this.testId, this.test).subscribe(test => {
-      this.messageService.add({severity: 'success', summary: 'Тест успешно создан', detail: 'ID - ' + test.id});
-    });
+    console.log(this.test);
+      this.testService.createTest(this.test)
+      .subscribe(res => {
+        this.messageService.add({severity: 'success', summary: 'Тест успешно изменён', detail: 'ID - ' + res.id});
+      });
   }
 
   addTestItem() {
     this.test.items.push(new TestItem());
+    this.scrollbarVisible();
   }
 
   deleteOption(j: number, options: string[]) {
     options.splice(j, 1);
+    this.scrollbarVisible();
+    this.cd.detectChanges();
   }
 
   addOption(allOptions: string[]) {
     allOptions.push('');
+    this.scrollbarVisible();
+    this.cd.detectChanges();
   }
 
   trackByIndex(index, item) {
@@ -97,6 +116,8 @@ export class EditTestComponent implements OnInit {
 
   deleteQuestion(i: number) {
     this.test.items.splice(i, 1);
+    this.scrollbarVisible();
+    this.cd.detectChanges();
   }
 
   scrollToTop() {
@@ -108,7 +129,7 @@ export class EditTestComponent implements OnInit {
   }
 
   scrollbarVisible() {
-    return document.documentElement.scrollHeight > document.documentElement.clientHeight;
+    this.isScrollbarVisible =  document.documentElement.scrollHeight > document.documentElement.clientHeight;
   }
 
   scrollTo(k: number) {

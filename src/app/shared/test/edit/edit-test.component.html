@@ -3,10 +3,10 @@
   <button pButton icon="pi pi-chevron-down" (click)="scrollToBottom()" class="test-sidebar-button-bottom"></button>
 </div>
 <div class="ui-fluid ui-g-offset-2 ui-md-offset-2 ui-g-7 ui-md-7">
-  <div class="trainer-title">{{labels.title}}</div>
-  <form name="questionForm" #questionForm="ngForm" (ngSubmit)="createTest()">
+  <div class="trainer-title">{{isEdit ? labels.editTitle : labels.createTitle}}</div>
+  <form name="questionForm" #questionForm="ngForm" (ngSubmit)="isEdit ? updateTest() : createTest()">
     <div class="question-submit-div">
-      <button pButton [disabled]="!questionForm.form.valid" type="submit" icon="pi pi-save" [label]="buttons.createTest"
+      <button pButton [disabled]="!questionForm.form.valid" type="submit" icon="pi pi-save" [label]="isEdit ? buttons.editTest : buttons.createTest"
               class="question-button"></button>
     </div>
     <div class="display-flex">
@@ -56,7 +56,7 @@
     </ng-container>
   </form>
 </div>
-<div class="test-sidebar ui-g-3 ui-md-3" [class.trainer-question-sidebar-visible]="scrollbarVisible()">
+<div class="test-sidebar ui-g-3 ui-md-3" [class.trainer-question-sidebar-visible]="isScrollbarVisible">
   <div *ngFor="let item of test.items; let k = index;" class="test-sidebar-item" (click)="scrollTo(k)">
     {{labels.question.title}}{{k + 1}}
   </div>

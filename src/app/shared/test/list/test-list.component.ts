@@ -50,7 +50,7 @@ export class TestListComponent {
   }
 
   getTests(event?: LazyLoadEvent) {
-    this.testService.getTests({page: 0, size: this.pageSize, sort: ''}).subscribe(tests => {
+    this.testService.getTests({page: 0, size: this.pageSize, sort: 'id'}).subscribe(tests => {
       this.pageSize = tests.page.size;
       this.totalRecords = tests.page.totalElements;
       this.tests = tests._embedded.tests;
@@ -76,13 +76,13 @@ export class TestListComponent {
 
   updateTest() {
     const date: Date = new Date(this.modalTest.timeToComplete);
-    let test = <Test>{
+    const test = <Test>{
       active: true,
       timeToComplete: date.getHours() * 60 * 60000 + date.getMinutes() * 60000,
       startedAt: this.modalTest.startedAt
     };
 
-    this.testService.updateTest(this.modalTest.id, test).subscribe(test => {
+    this.testService.updateTest(this.modalTest.id, test).subscribe(res => {
       this.messageService.add({severity: 'success', summary: 'Тест запущен'});
       this.refreshModalTest();
       this.getTests();
@@ -102,13 +102,13 @@ export class TestListComponent {
   }
 
   resetActiveTest(id: number) {
-    let test = <Test>{
+    const test = <Test>{
       active: false,
       timeToComplete: null,
       startedAt: null
     };
 
-    this.testService.updateTest(id, test).subscribe(test => {
+    this.testService.updateTest(id, test).subscribe(res => {
       this.messageService.add({severity: 'success', summary: 'Время сброшено'});
       this.getTests();
     });

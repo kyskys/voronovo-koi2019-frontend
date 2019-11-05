@@ -33,35 +33,38 @@
           {{test.id + ' - ' + test.name}}
         </li>
       </ul>
-      <button pButton type="button" icon="pi pi-times" label="{{labels.delete}}" class="ui-button-danger"
-              (click)="deleteSelected($event)"></button>
-      <button pButton icon="pi pi-pencil" label="{{labels.edit}}" class="ui-button-warning"
-              [disabled]="this.selectedTests.length > 1" (click)="editSelected()"></button>
-      <button pButton icon="pi pi-calendar" label="{{labels.start}}" class="ui-button-success"
-              *ngIf="this.selectedTests.length == 1 && !this.selectedTests[0].active"
-              (click)="startSelected()"></button>
+      <div class="list-buttons">
+        <button pButton type="button" icon="pi pi-times" label="{{labels.delete}}" class="ui-button-danger"
+                (click)="deleteSelected($event)"></button>
+        <button pButton icon="pi pi-pencil" label="{{labels.edit}}" class="ui-button-warning"
+                [disabled]="this.selectedTests.length > 1"
+                routerLink="/test/edit/{{this.selectedTests[0].id}}"></button>
+        <button pButton icon="pi pi-calendar" label="{{labels.start}}" class="ui-button-success"
+                *ngIf="this.selectedTests.length == 1 && !this.selectedTests[0].active"
+                (click)="startSelected()"></button>
+      </div>
     </ng-container>
   </ng-template>
 </p-table>
-<p-dialog header="{{labels.modal.title}}" [(visible)]="showModal" [style]="{width: '400px'}">
-  <form name="startTestForm" *ngIf="this.modalTest">
+<p-dialog header="{{labels.modal.title}}" [(visible)]="showModal" [style]="{width: '450px'}">
+  <form name="startTestForm" #startTestForm="ngForm" *ngIf="this.modalTest">
     <div class="ui-g-12 ui-md-12">
       <div class="ui-g-6 ui-md-6">{{labels.modal.date}}</div>
       <div class="ui-g-6 ui-md-6">
         <p-calendar [showTime]="true" [(ngModel)]="this.modalTest.startedAt" name="startedAt"
-                    appendTo="body"></p-calendar>
+                    appendTo="body" required></p-calendar>
       </div>
     </div>
     <div class="ui-g-12 ui-md-12">
       <div class="ui-g-6 ui-md-6">{{labels.modal.time}}</div>
       <div class="ui-g-6 ui-md-6">
         <p-calendar [timeOnly]="true" [(ngModel)]="this.modalTest.timeToComplete" [defaultDate]="defaultDate"
-                    name="timeToComplete" appendTo="body"></p-calendar>
+                    name="timeToComplete" appendTo="body" required></p-calendar>
       </div>
     </div>
     <div class="ui-g-12 ui-md-12 modal-footer">
-      <button pButton icon="pi pi-check" type="submit" label="{{labels.save}}" (click)="updateTest()"
-              class="ui-button-success"></button>
+      <button pButton icon="pi pi-check" type="submit" [disabled]="!startTestForm.form.valid" label="{{labels.save}}"
+              (click)="updateTest()" class="ui-button-success"></button>
       <button pButton icon="pi pi-times" label="{{labels.cancel}}" (click)="cancel()"
               class="ui-button-error"></button>
     </div>

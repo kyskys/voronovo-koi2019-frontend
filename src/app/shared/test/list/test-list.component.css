@@ -13,3 +13,13 @@
   color: #e91224;
   padding-top: .5em;
 }
+
+.list-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.list-buttons > button {
+  width: 150px;
+  margin-right: 50px;
+}
