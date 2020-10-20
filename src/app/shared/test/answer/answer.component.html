@@ -1,0 +1,45 @@
+<div class="answers-dropdown">
+  <p-dropdown [options]="testsNames" [(ngModel)]="selectedTestName"
+              placeholder="{{labels.selectTest}}" (onChange)="loadTestAnswersKids()"></p-dropdown>
+  <p-dropdown [options]="testAnswersKids" [(ngModel)]="selectedTestAnswerKid" [filter]="true"
+              [showClear]="true" placeholder="{{labels.selectTestAnswerKid}}">
+  </p-dropdown>
+</div>
+<div *ngIf="selectedTestAnswerKid">
+  <div class="ui-g-11 ui-md-11 ui-g-offset-1 ui-md-offset-1">
+    <h2>{{selectedTestAnswerKid}}</h2>
+  </div>
+  <div class="ui-g-11 ui-md-11 ui-g-offset-1 ui-md-offset-1">
+    {{answerLabels.percentText}}: {{getPercent()}}% ({{getCorrectAnswersCount()}} / {{getAnswersArray().length}})
+  </div>
+  <div class="ui-g-11 ui-md-11 ui-g-offset-1 ui-md-offset-1">
+    {{answerLabels.timeToFinish}}: {{getFinishTime() | date:'HH:mm:ss'}} ({{answerLabels.remainedTimeText}}
+    {{getRemainedTime() | date:'HH:mm:ss'}})
+  </div>
+  <div class="ui-g-12 ui-md-12 answer-title">
+    {{answerLabels.answersTitle}}
+  </div>
+  <div class="ui-g-12 ui-md-12">
+    <div *ngFor="let answer of getAnswersArray(); let i = index; trackBy: trackByIndex">
+      <p-card [styleClass]="isCorrect(answer) ? 'card-answer-correct' : 'card-answer-wrong'">
+        {{answerLabels.questionLabel}} {{i + 1}}
+        <button pButton icon="pi pi-caret-up" label="{{labels.showAnswers}}" (click)="showAnswersForQuestion(answer)"
+                class="ui-button-info"></button>
+      </p-card>
+    </div>
+  </div>
+</div>
+<p-dialog header="{{labels.infoDialogTitle}}" [(visible)]="isDialog" [style]="{width: '50vw'}">
+  <div class="ui-g-12 ui-md-12">
+      {{dialogLabels.expression}}:
+  </div>
+  <div class="ui-g-12 ui-md-12">
+    {{selectedAnswer?.expression}}
+  </div>
+  <div class="ui-g-12 ui-md-12">
+    {{dialogLabels.correctAnswer}}: {{selectedAnswer?.correctAnswer}}
+  </div>
+  <div class="ui-g-12 ui-md-12">
+    {{dialogLabels.kidAnswer}}: {{selectedAnswer?.answer}}
+  </div>
+</p-dialog>

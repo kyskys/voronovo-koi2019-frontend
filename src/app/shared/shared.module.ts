@@ -17,6 +17,9 @@ import {FileUploadModule} from 'primeng/fileupload';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 import { EditTestComponent } from './test/edit/edit-test.component';
+import { TestAnswerComponent } from './test/answer/answer.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { CardModule } from 'primeng/card';
 
 @NgModule({
   imports: [
@@ -30,7 +33,9 @@ import { EditTestComponent } from './test/edit/edit-test.component';
     InputTextareaModule,
     FileUploadModule,
     DialogModule,
-    CalendarModule
+    CalendarModule,
+    DropdownModule,
+    CardModule
   ],
   exports: [
     HeaderComponent
@@ -42,7 +47,8 @@ import { EditTestComponent } from './test/edit/edit-test.component';
     TestListComponent,
     PageNotFoundComponent,
     HeaderComponent,
-    CategoryNamePipe
+    CategoryNamePipe,
+    TestAnswerComponent
   ]
 })
 export class SharedModule {

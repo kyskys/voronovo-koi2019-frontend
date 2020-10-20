@@ -45,4 +45,12 @@ export class TestService {
     items.forEach(item => item);
     return this.http.post(`/tests/${id}/items`, items);
   }
+
+  getTestNames(): Observable<any> {
+    return this.http.get(`/tests/names`);
+  }
+
+  getTestAnswers(id: number): Observable<any> {
+    return this.http.get(`/tests/results/${id}`);
+  }
 }
