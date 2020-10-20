@@ -11,11 +11,10 @@ export class HeaderComponent implements OnInit {
 
   labels = {
     question: 'Вопрос дня',
-    test: 'Тесты',
     score: 'Рейтинг',
-    create: 'Создать',
-    list: 'Список',
-    answers: 'Результаты'
+    create: 'Создать тест',
+    list: 'Список тестов',
+    answers: 'Результаты тестов'
   };
 
   constructor() {
@@ -28,21 +27,16 @@ export class HeaderComponent implements OnInit {
         routerLink: 'question'
       },
       {
-        label: this.labels.test,
-        items: [
-          {
-            label: this.labels.create,
-            routerLink: 'test/create'
-          },
-          {
-            label: this.labels.list,
-            routerLink: 'test/list'
-          },
-          {
-            label: this.labels.answers,
-            routerLink: 'test/answer'
-          }
-        ]
+        label: this.labels.create,
+        routerLink: 'test/create'
+      },
+      {
+        label: this.labels.list,
+        routerLink: 'test/list'
+      },
+      {
+        label: this.labels.answers,
+        routerLink: 'test/answer'
       },
       {
         label: this.labels.score,
