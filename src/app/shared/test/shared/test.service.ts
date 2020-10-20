@@ -33,6 +33,10 @@ export class TestService {
     return this.http.post('/tests/deleteAll', {value: [...ids]});
   }
 
+  deleteTest(id: number): Observable<any> {
+    return this.http.delete(`/tests/${id}`);
+  }
+
   getTestInfo(id: number): Observable<any> {
     return this.http.get('/tests/' + id);
   }

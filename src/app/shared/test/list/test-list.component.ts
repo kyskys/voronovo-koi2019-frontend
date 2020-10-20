@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
-import {Test} from '../../model/test';
-import {LazyLoadEvent, MessageService} from 'primeng/api';
-import {TestService} from '../shared/test.service';
-import {pull, cloneDeep} from 'lodash';
+import { Component } from '@angular/core';
+import { Test } from '../../model/test';
+import { LazyLoadEvent, MessageService } from 'primeng/api';
+import { TestService } from '../shared/test.service';
+import { pull, cloneDeep } from 'lodash';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-test-list',
@@ -16,7 +17,7 @@ export class TestListComponent {
   pageSize: number;
   selectedTests: Test[];
   modalTest: Test;
-  readonly defaultDate: Date = new Date(1970,1,1,0,0,0,0);
+  readonly defaultDate: Date = new Date(1970, 1, 1, 0, 0, 0, 0);
 
   cols = [
     {field: 'id', label: 'ID'},
@@ -58,7 +59,11 @@ export class TestListComponent {
   }
 
   deleteSelected(event) {
-    this.testService.deleteTests(this.selectedTests.map(score => score.id)).subscribe(response => {
+    forkJoin(
+      this.selectedTests
+        .map(score => score.id)
+        .map(id => this.testService.deleteTest(id))
+    ).subscribe(response => {
       this.messageService.add({severity: 'success', summary: 'Удаление успешно'});
       pull(this.tests, ...this.selectedTests);
       this.selectedTests = [];
